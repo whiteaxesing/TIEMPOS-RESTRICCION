@@ -1,0 +1,15 @@
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Tica Día','12:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Reventado Día','12:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Tica Noche','19:25');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Reventado Noche','19:25');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Nica Matutina','10:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Nica Tarde','14:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Nica 6PM','17:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Nica Noche','20:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Dominicana Día','12:25');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Dominicana Noche','16:25');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('NY Día','12:55');
+INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('NY Noche','12:55');
+
+--INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('Dominicana Domingo','16:25');
+--INSERT INTO nombre_sorteo(nombre, hora_cierre) Values ('La Primera','16:25');

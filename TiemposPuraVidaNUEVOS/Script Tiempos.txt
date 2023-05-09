@@ -1,0 +1,154 @@
+CREATE TABLE ticket (
+	id_ticket SERIAL NOT NULL,
+	fecha DATE NOT NULL,
+	id_sorteo INT NOT NULL,
+	monto_total FLOAT NOT NULL,
+	cliente VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id_ticket)
+);
+
+CREATE TABLE sorteo (
+  	id_sorteo SERIAL NOT NULL,
+  	id_nombre_sorteo INT NOT NULL,
+	fecha DATE NOT NULL,
+  	PRIMARY KEY (id_sorteo)
+);
+
+CREATE TABLE nombre_sorteo (
+	id_nombre_sorteo SERIAL NOT NULL,
+	nombre VARCHAR(20) NOT NULL,
+	hora_cierre VARCHAR(6) NOT NULL,
+	PRIMARY KEY (id_nombre_sorteo)
+);
+
+CREATE TABLE numero (
+  	id_numero INT NOT NULL,
+  	numero INT NOT NULL,
+  	PRIMARY KEY (id_numero)
+);
+
+CREATE TABLE detalle_ticket (
+  	id_detalle_ticket SERIAL NOT NULL,
+  	id_ticket INT NOT NULL,
+	id_numero INT NOT NULL,
+	monto INT NOT NULL,
+	monto_reventado INT NOT NULL,
+  	PRIMARY KEY (id_detalle_ticket)
+);
+
+CREATE TABLE usuario (
+  	id_usuario SERIAL NOT NULL,
+  	nombre VARCHAR(20) NOT NULL,
+	contrasena VARCHAR(20) NOT NULL,
+  	PRIMARY KEY (id_usuario)
+);
+
+CREATE TABLE parametros(
+  	id_parametros SERIAL NOT NULL,
+  	monto_maximo_venta INT NOT NULL,
+	monto_reventado_maximo INT NOT NULL,
+  	PRIMARY KEY (id_usuario)
+);
+
+
+
+
+CREATE TABLE papel_parley (
+	id_papel_parley SERIAL NOT NULL,
+	fecha DATE NOT NULL,
+	monto_total FLOAT NOT NULL,
+	PRIMARY KEY (id_papel_parley)
+);
+
+CREATE TABLE detalle_parley (
+	id_detalle_parley SERIAL NOT NULL,
+	id_papel_parley INT NOT NULL,
+	numero varchar(2) NOT NULL,
+	numero2 varchar(2) NOT NULL,
+	monto INT NOT NULL,
+	PRIMARY KEY (id_detalle_parley)
+);
+
+
+ALTER TABLE detalle_parley ADD  CONSTRAINT FK_id_papel_parley FOREIGN KEY(id_papel_parley)
+REFERENCES papel_parley(id_papel_parley);
+
+ALTER TABLE sorteo ADD  CONSTRAINT FK_id_nombre_sorteo FOREIGN KEY(id_nombre_sorteo)
+REFERENCES nombre_sorteo(id_nombre_sorteo);
+
+ALTER TABLE detalle_ticket ADD  CONSTRAINT FK_id_ticket FOREIGN KEY(id_ticket)
+REFERENCES ticket(id_ticket);
+
+ALTER TABLE detalle_ticket ADD  CONSTRAINT FK_id_numero FOREIGN KEY(id_numero)
+REFERENCES numero(id_numero);
+
+
+
+CREATE TABLE detalle_pega3 (
+	id_detalle_pega3 SERIAL NOT NULL,
+	id_papel_pega3 INT NOT NULL,
+	numero varchar(3) NOT NULL,
+	monto INT NOT NULL,
+	modalidad varchar(8) NOT NULL,
+	PRIMARY KEY (id_detalle_pega3)
+);
+
+CREATE TABLE papel_pega3 (
+	id_papel_pega3 SERIAL NOT NULL,
+	fecha DATE NOT NULL,
+	monto_total FLOAT NOT NULL,
+	id_nombre_pega3 INT NOT NULL,
+	PRIMARY KEY (id_papel_pega3)
+);
+
+CREATE TABLE nombre_pega3(
+	id_nombre_pega3 SERIAL NOT NULL,
+	nombre varchar(20) NOT NULL,
+	PRIMARY KEY (id_nombre_pega3)
+);
+
+ALTER TABLE detalle_pega3 ADD  CONSTRAINT FK_id_papel_pega3 FOREIGN KEY(id_papel_pega3)
+REFERENCES papel_pega3 (id_papel_pega3);
+
+ALTER TABLE papel_pega3 ADD  CONSTRAINT FK_id_nombre_pega3 FOREIGN KEY(id_nombre_pega3)
+REFERENCES nombre_pega3(id_nombre_pega3);
+
+ALTER TABLE nombre_pega3 ADD COLUMN hora_cierre varchar(5) NOT NULL;
+
+
+
+
+
+
+create table parametro (
+	id_parametro SERIAL NOT NULL,
+  	juego VARCHAR(30) NOT NULL,
+	limite FLOAT NOT NULL,
+  	PRIMARY KEY (id_parametro)
+);
+
+
+INSERT INTO parametro(juego, limite) Values ('Tiempos','2000');
+INSERT INTO parametro(juego, limite) Values ('Reventado','2000');
+INSERT INTO parametro(juego, limite) Values ('Pega3','500');
+INSERT INTO parametro(juego, limite) Values ('Parley','1000');
+
+
+
+
+
+
+
+
+
+
+
+
+--CREATE OR REPLACE FUNCTION borrar_ticket(numeroTicket int) RETURNS void AS $$
+--    #variable_conflict use_variable
+--    BEGIN
+--		DELETE FROM detalle_TICKET WHERE id_ticket = numeroTicket;
+--        DELETE FROM ticket WHERE id_ticket = numeroTicket;
+--    END;
+--$$ LANGUAGE plpgsql;
+
