@@ -1149,16 +1149,22 @@ public class VentaTiempos extends javax.swing.JFrame {
             ArrayList<PapelTiempos> papelAux = conexion.reimprimir(ultimoTicket.get(0));
             PapelTiempos papel = papelAux.get(0);
             bHeight = Double.valueOf(papel.getNumeros().size());
-            conexion.borrarTicket(ultimoTicket.get(0));
-            PrinterJob pj = PrinterJob.getPrinterJob();        
-            pj.setPrintable(new ImpresoraBorrarPapel(papel),getPageFormat(pj));
-            try{
-                pj.print();
-                finalizacionVenta();
+            //conexion.borrarTicket(ultimoTicket.get(0));
+            boolean borrado = conexion.borrarTicketConVerificacion(ultimoTicket.get(0));
+            if (borrado){
+                PrinterJob pj = PrinterJob.getPrinterJob();        
+                pj.setPrintable(new ImpresoraBorrarPapel(papel),getPageFormat(pj));
+                try{
+                    pj.print();
+                    finalizacionVenta();
+                }
+                catch (PrinterException ex) {
+                    ex.printStackTrace();
+                }  
             }
-            catch (PrinterException ex) {
-                ex.printStackTrace();
-            }  
+            else{
+                JOptionPane.showMessageDialog(null,"Ya no se pueden vender tickets de sorteos cerrados");
+            }
         }
         
         if (seleccion == 1){       //SE DI EL ULTIMO PAPEL
@@ -1170,15 +1176,21 @@ public class VentaTiempos extends javax.swing.JFrame {
                     ArrayList<PapelTiempos> papelAux = conexion.reimprimir(Integer.parseInt(input));
                     PapelTiempos papel = papelAux.get(0);
                     bHeight = Double.valueOf(papel.getNumeros().size());
-                    conexion.borrarTicket(Integer.parseInt(input));
-                    PrinterJob pj = PrinterJob.getPrinterJob();        
-                    pj.setPrintable(new ImpresoraBorrarPapel(papel),getPageFormat(pj));
-                    try{
-                        pj.print();
-                        finalizacionVenta();
+                    //conexion.borrarTicket(Integer.parseInt(input));
+                    boolean borrado = conexion.borrarTicketConVerificacion(Integer.parseInt(input));
+                    if (borrado){
+                        PrinterJob pj = PrinterJob.getPrinterJob();        
+                        pj.setPrintable(new ImpresoraBorrarPapel(papel),getPageFormat(pj));
+                        try{
+                            pj.print();
+                            finalizacionVenta();
+                        }
+                        catch (PrinterException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                    catch (PrinterException ex) {
-                        ex.printStackTrace();
+                    else{
+                        JOptionPane.showMessageDialog(null,"Ya no se pueden vender tickets de sorteos cerrados");
                     }
                 } 
                 else {

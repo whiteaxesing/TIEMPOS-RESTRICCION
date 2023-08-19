@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -411,6 +413,52 @@ public class ConexionBase {
             System.exit(0);
       }
     }
+    
+public boolean borrarTicketConVerificacion(int numeroTicket) {
+    Connection conexion = null;
+    Statement comando = null;
+    boolean ticketBorrado = false;
+
+    try {
+        Class.forName("org.postgresql.Driver");
+        conexion = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/tiempos", "postgres", "MIlan123");
+
+        // Consulta para obtener la hora de cierre del ticket
+        String consultaHoraCierre = "SELECT hora_cierre FROM ticket " +
+                                    "INNER JOIN sorteo ON ticket.id_sorteo = sorteo.id_sorteo " +
+                                    "INNER JOIN nombre_sorteo ON sorteo.id_nombre_sorteo = nombre_sorteo.id_nombre_sorteo " +
+                                    "WHERE id_ticket = " + numeroTicket;
+
+        comando = conexion.createStatement();
+        ResultSet resultado = comando.executeQuery(consultaHoraCierre);
+
+        if (resultado.next()) {
+            // Obtener la hora de cierre del ticket desde el resultado
+            String horaCierreStr = resultado.getString("hora_cierre");
+            LocalTime horaCierreTicket = LocalTime.parse(horaCierreStr);
+
+            // Obtener la hora local actual
+            LocalTime horaActual = LocalTime.now().withSecond(0).withNano(0); // Ignorar segundos y nanosegundos
+
+            if (horaCierreTicket.isAfter(horaActual)) {
+                // Si la hora de cierre es posterior a la hora actual, se puede borrar el ticket
+                String sql = "DELETE FROM detalle_ticket WHERE id_ticket = " + numeroTicket + "; " +
+                             "DELETE FROM ticket WHERE id_ticket = " + numeroTicket;
+                comando.executeUpdate(sql);
+                ticketBorrado = true;
+            }
+        }
+
+        resultado.close();
+        comando.close();
+        conexion.close();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return ticketBorrado;
+}
     
     public ArrayList<PapelTiempos> reimprimir(int idTicket){
         ArrayList<PapelTiempos> papel = new ArrayList<>();
