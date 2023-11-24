@@ -435,6 +435,12 @@ public boolean borrarTicketConVerificacion(int numeroTicket) {
         if (resultado.next()) {
             // Obtener la hora de cierre del ticket desde el resultado
             String horaCierreStr = resultado.getString("hora_cierre");
+
+            // Asegurarse de que la hora tenga dos dígitos
+            if (horaCierreStr.length() < 5) {
+                horaCierreStr = "0" + horaCierreStr;
+            }
+
             LocalTime horaCierreTicket = LocalTime.parse(horaCierreStr);
 
             // Obtener la hora local actual
