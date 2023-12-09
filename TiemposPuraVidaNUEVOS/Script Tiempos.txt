@@ -43,16 +43,6 @@ CREATE TABLE usuario (
   	PRIMARY KEY (id_usuario)
 );
 
-CREATE TABLE parametros(
-  	id_parametros SERIAL NOT NULL,
-  	monto_maximo_venta INT NOT NULL,
-	monto_reventado_maximo INT NOT NULL,
-  	PRIMARY KEY (id_usuario)
-);
-
-
-
-
 CREATE TABLE papel_parley (
 	id_papel_parley SERIAL NOT NULL,
 	fecha DATE NOT NULL,
@@ -133,22 +123,4 @@ INSERT INTO parametro(juego, limite) Values ('Reventado','2000');
 INSERT INTO parametro(juego, limite) Values ('Pega3','500');
 INSERT INTO parametro(juego, limite) Values ('Parley','1000');
 
-
-
-
-
-
-
-
-
-
-
-
---CREATE OR REPLACE FUNCTION borrar_ticket(numeroTicket int) RETURNS void AS $$
---    #variable_conflict use_variable
---    BEGIN
---		DELETE FROM detalle_TICKET WHERE id_ticket = numeroTicket;
---        DELETE FROM ticket WHERE id_ticket = numeroTicket;
---    END;
---$$ LANGUAGE plpgsql;
 
