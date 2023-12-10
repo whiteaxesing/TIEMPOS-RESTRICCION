@@ -131,7 +131,8 @@ public class VentaTiempos extends javax.swing.JFrame {
         }
     }
     
-    public void crearTicket(){
+    public boolean crearTicket(){
+        boolean creado = false;
         String textoCombo = SorteoCombo.getItemAt(SorteoCombo.getSelectedIndex());
         
         String fecha = fechaLabel.getText();
@@ -149,6 +150,7 @@ public class VentaTiempos extends javax.swing.JFrame {
         ArrayList<Sorteo> listaSorteos = conexion.getSorteos();
         for (int i = 0; i < listaSorteos.size(); i++){
             if((listaSorteos.get(i).getNombre().equals(textoCombo)) && (listaSorteos.get(i).getFecha().equals(fecha))){
+                creado = true;
                 conexion.crearTicket(listaSorteos.get(i).getId_sorteo(),
                                     montoTotalPapel, nombreCliente,fechaHoy);
                 for (int j = 0; j < listaNumeros.size(); j++ ){
@@ -160,9 +162,9 @@ public class VentaTiempos extends javax.swing.JFrame {
                         conexion.crearDetalleTicket(listaNumeros.get(j).getNum(),
                                             listaNumeros.get(j).getMonto(),0);
                 }
-
             }
         }
+        return creado;
     }
     
     public static String nombreCliente = "";
@@ -640,18 +642,22 @@ public class VentaTiempos extends javax.swing.JFrame {
                     int horaCierre = Integer.parseInt(partes[0]);
                     int minCierre = Integer.parseInt(partes[1]);
                     if(((hora <= horaCierre)&&(minuto < minCierre)) || ((hora < horaCierre)&&(minuto >= minCierre))){
-                        crearTicket();
-                        bHeight = Double.valueOf(numeroPapel.size());
-                        PrinterJob pj = PrinterJob.getPrinterJob();        
-                        pj.setPrintable(new FacturaTiempos(),getPageFormat(pj));
-                        try{
-                            pj.print();
-                            finalizacionVenta();
+                        boolean ticketCreado = crearTicket();
+                        if(ticketCreado){
+                            bHeight = Double.valueOf(numeroPapel.size());
+                            PrinterJob pj = PrinterJob.getPrinterJob();        
+                            pj.setPrintable(new FacturaTiempos(),getPageFormat(pj));
+                            try{
+                                pj.print();
+                                finalizacionVenta();
+                            }
+                            catch (PrinterException ex) {
+                                     ex.printStackTrace();
+                            }
                         }
-                        catch (PrinterException ex) {
-                                 ex.printStackTrace();
+                        else{
+                            JOptionPane.showMessageDialog(null,"Error al crear el tiquete, Base de datos!");
                         }
-                        
                     }
                     else
                         JOptionPane.showMessageDialog(null,"Sorteo Expirado");
